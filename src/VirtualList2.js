@@ -1,4 +1,6 @@
-import React, { Component } from "react";
+import React, {
+  Component
+} from "react";
 /**
  *  实现步骤
  *  1. 定义一个子组件
@@ -11,7 +13,14 @@ import React, { Component } from "react";
  *  4. 滚动时改变 item里数据
  *      4.1 子元素向父元素传递 node和index 子元素通过 ref 获取到node 传递给父元素
  *      4.2 父元素接收到node后 获取到node的距离 getBoundingClientRect() 方法
- *
+ *      4.3 把所有元素的上下距离和index保存在cache中
+ *      4.4 在滚动事件中 获取index下标 遍历cache 找出第一个node的bottom超过scrollTop元素的下标
+ *      4.5 下标赋值给start end在通过start+count
+ *      4.6 在滚动事件中在调用获取可视窗数据的函数
+ *  5. 这样虽实现了但是上下会有一些留白，所以上下需要加一些buffer缓存的数据
+ *      5.1如果每个高度不是固定的怎么办
+ *      5.1如果高速时固定的，但是每个有图片，loadding后才加载出来
+ *      5.3滚动动效
  *
  */
 
@@ -72,7 +81,9 @@ export default class VirtualList2 extends Component {
     if (!anchor) {
       return;
     }
-    this.anchor = { ...anchor };
+    this.anchor = {
+      ...anchor
+    };
     this.start = this.anchor.index;
     this.end = this.start + this.count;
   }
@@ -88,25 +99,36 @@ export default class VirtualList2 extends Component {
     });
   };
   render() {
-    const { vData, topOffset, bottomOffset } = this.state;
-    return (
-      <div
-        style={{
+    const {
+      vData,
+      topOffset,
+      bottomOffset
+    } = this.state;
+    return ( <
+      div style = {
+        {
           paddingTop: `${topOffset}px`,
           paddingBottom: `${bottomOffset}px`
-        }}
-      >
-        {vData.map((item, index) => {
-          return (
-            <Item
-              key={this.start + index}
-              index={this.start + index}
-              cacheOffset={this.cacheOffset}
-            ></Item>
+        }
+      } > {
+        vData.map((item, index) => {
+          return ( <
+            Item key = {
+              this.start + index
+            }
+            index = {
+              this.start + index
+            }
+            cacheOffset = {
+              this.cacheOffset
+            } >
+            <
+            /Item>
           );
-        })}
-        <Item></Item>
-      </div>
+        })
+      } <
+      Item > < /Item> < /
+      div >
     );
   }
 }
@@ -119,16 +141,20 @@ class Item extends Component {
       this.props.cacheOffset(this.node, this.props.index);
   }
   render() {
-    return (
-      <div
-        className="item"
-        ref={node => {
+    return ( <
+      div className = "item"
+      ref = {
+        node => {
           return (this.node = node);
-        }}
-      >
-        <p>{this.props.index}测试数据</p>
-        <p>skr</p>
-      </div>
+        }
+      } >
+      <
+      p > {
+        this.props.index
+      }
+      测试数据 < /p> <
+      p > skr < /p> < /
+      div >
     );
   }
 }
